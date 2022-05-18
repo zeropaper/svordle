@@ -34,13 +34,13 @@
   }
   const keyClass = (key: string) => {
     const used = keyIsUsed(key)
-    console.info(key, used)
     if (used) {
       const lastGuess = guesses.at(-1)
       for (let l = 0; l < 5; l += 1) {
         if (lastGuess[l] === word[l] && key === word[l]) return 'match'
       }
       if (word.includes(key)) return 'wrong'
+      return 'used'
     }
     return null
   }
