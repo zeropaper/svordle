@@ -11,7 +11,16 @@
   let guesses: Guesses = []
   let remainingGuesses: Guesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
   let currentGuess: Guess = makeEmptyGuess()
-
+  
+  /* 
+  const init = () => {
+    wordFound = false
+    guesses = []
+    remainingGuesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
+    currentGuess = makeEmptyGuess()
+  }
+  */
+  
   let keyboard = [
     'qwertzuiop'.split(''),
     'asdfghjkl'.split(''),
@@ -114,16 +123,16 @@
         <td>{currentGuess[4]}</td>
       </tr>
       {/if}
+    {/if}
 
-      {#if maxGuesses - guesses.length > 1}
-        {#each remainingGuesses as guess}
-        <tr class="remaining">
-          {#each guess as letter}
-          <td></td>
-          {/each}
-        </tr>
+    {#if maxGuesses - guesses.length > 1}
+      {#each remainingGuesses as guess}
+      <tr class="remaining">
+        {#each guess as letter}
+        <td></td>
         {/each}
-      {/if}
+      </tr>
+      {/each}
     {/if}
   </tbody>
 </table>
