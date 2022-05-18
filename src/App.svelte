@@ -12,7 +12,7 @@
   let remainingGuesses: Guesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
   let currentGuess: Guess = makeEmptyGuess()
 
-  const keyboard = [
+  let keyboard = [
     'qwertzuiop'.split(''),
     'asdfghjkl'.split(''),
     'yxcvbnm'.split(''),
@@ -33,9 +33,14 @@
     return false
   }
   const keyClass = (key: string) => {
-    if (keyIsUsed(key)) {
+    const used = keyIsUsed(key)
+    console.info(key, used)
+    if (used) {
       const lastGuess = guesses.at(-1)
-      return 'used'
+      for (let l = 0; l < 5; l += 1) {
+        if (lastGuess[l] === word[l] && key === word[l]) return 'match'
+      }
+      if (word.includes(key)) return 'wrong'
     }
     return null
   }
@@ -58,6 +63,7 @@
     guesses.push(currentGuess)
     guesses = guesses
     if (wordFound) return
+    keyboard = keyboard
     currentGuess = makeEmptyGuess()
     if (guesses.length > maxGuesses - 1) return 
     remainingGuesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
@@ -130,7 +136,7 @@
     {#each keyboard as row}
     <div>
       {#each row as key}
-        <button on:click={() => addLetter(key)}>{key}</button>
+        <button class={keyClass(key)} on:click={() => addLetter(key)}>{key}</button>
       {/each}
     </div>
     {/each}
@@ -201,9 +207,11 @@ button {
 
 .rows button {
   text-align: center;
-  width: 32px;
-  height: 32px;
+  width: 28px;
+  height: 28px;
   padding: 0;
+  border: 1px solid #333;
+  border-radius: 3px;
 }
 .rows button:not(:last-of-type) {
   margin-right: 2px;
@@ -211,5 +219,15 @@ button {
 .rows button.used:not(.wrong),
 .rows button.used:not(.match) {
   opacity: 0.5
+}
+.rows button.wrong,
+.rows button.match {
+  color: white
+}
+.rows button.wrong {
+  background: orange
+}
+.rows button.match {
+  background: green
 }
 </style>
