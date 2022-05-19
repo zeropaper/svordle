@@ -5,7 +5,7 @@
   const word = words.at(Math.floor(Math.random() * words.length))
   const wordExists = (search: string) => words.includes(search);
 
-  const maxGuesses = 5;
+  const maxGuesses = 6;
   const makeEmptyGuess = (l = 5) => new Array(l).fill('')
   let wordFound = false
   let guesses: Guesses = []
