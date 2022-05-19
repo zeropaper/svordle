@@ -140,7 +140,7 @@
 <div class="attempts">{`${maxGuesses - guesses.length} attempts left`}</div>
 
 <div class="keyboard">
-  <button on:click={backspace}>meh</button>
+  <button on:click={backspace}>⌫</button>
   <div class="rows">
     {#each keyboard as row}
     <div>
@@ -150,7 +150,7 @@
     </div>
     {/each}
   </div>
-  <button on:click={checkGuess}>Enter</button>
+  <button on:click={checkGuess}>⏎</button>
 </div>
 
 <style>
