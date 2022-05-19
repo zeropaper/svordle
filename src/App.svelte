@@ -1,7 +1,7 @@
 <script lang="ts">
   // TODO: find pageid with https://en.wiktionary.org/w/api.php?action=query&titles=<word>&prop=revisions&rvprop=content&rvgeneratexml=&format=json to query https://en.wikipedia.org/wiki/Special:ApiSandbox#action=parse&format=json&pageid=<pageid>
   import words from './lib/words'
-  import { Guesses, Guess } from './lib/guesses'
+  import type { Guesses, Guess } from './lib/guesses'
   const word = words.at(Math.floor(Math.random() * words.length))
   const wordExists = (search: string) => words.includes(search);
 
@@ -10,7 +10,7 @@
   let wordFound = false
   let guesses: Guesses = []
   let remainingGuesses: Guesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
-  let currentGuess: Guess = makeEmptyGuess()
+  let currentGuess = <Guess>makeEmptyGuess()
   
   /* 
   const init = () => {
@@ -73,7 +73,7 @@
     guesses = guesses
     if (wordFound) return
     keyboard = keyboard
-    currentGuess = makeEmptyGuess()
+    currentGuess = <Guess>makeEmptyGuess()
     if (guesses.length > maxGuesses - 1) return 
     remainingGuesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
   }
@@ -81,7 +81,7 @@
   const backspace = () => {
     const kept = currentGuess.filter(Boolean)
     kept.pop()
-    currentGuess = [...kept, ...makeEmptyGuess(5 - kept.length)]
+    currentGuess = <Guess>[...kept, ...makeEmptyGuess(5 - kept.length)]
   }
 
   window.addEventListener('keyup', ({ key }) => {
