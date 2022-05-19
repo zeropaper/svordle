@@ -1,25 +1,35 @@
 <script lang="ts">
-  // TODO: find pageid with https://en.wiktionary.org/w/api.php?action=query&titles=<word>&prop=revisions&rvprop=content&rvgeneratexml=&format=json to query https://en.wikipedia.org/wiki/Special:ApiSandbox#action=parse&format=json&pageid=<pageid>
+  import getDefinition from './lib/getDefinition'
   import words from './lib/words'
   import type { Guesses, Guess } from './lib/guesses'
-  const word = words.at(Math.floor(Math.random() * words.length))
   const wordExists = (search: string) => words.includes(search);
 
   const maxGuesses = 6;
   const makeEmptyGuess = (l = 5) => new Array(l).fill('')
+  let word = words.at(Math.floor(Math.random() * words.length))
+  let definition: any;
   let wordFound = false
   let guesses: Guesses = []
   let remainingGuesses: Guesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
   let currentGuess = <Guess>makeEmptyGuess()
   
-  /* 
   const init = () => {
+    word = words.at(Math.floor(Math.random() * words.length))
     wordFound = false
     guesses = []
     remainingGuesses = new Array(maxGuesses - (guesses.length + 1)).fill(makeEmptyGuess())
     currentGuess = makeEmptyGuess()
+    getDefinition(word)
+      .then((info) => {
+        definition = info
+        console.info('definition', definition)
+      })
+      .catch((err) => {
+        console.warn('getDefinition error', err.stack)
+        init()
+      })
   }
-  */
+  init()
   
   let keyboard = [
     'qwertzuiop'.split(''),
@@ -100,7 +110,10 @@
 </script>
 
 <dialog open={wordFound || !(maxGuesses - guesses.length)}>
-  <div>{word}</div>
+  <header>{definition?.title || word}</header>
+  <main>
+    {@html definition?.text?.['*'] || ''}
+  </main>
 </dialog>
 
 <table>
